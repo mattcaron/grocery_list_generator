@@ -1,6 +1,6 @@
+use chrono::Local;
 /// Module to handle generating latex files for ingredients
 use std::error::Error;
-use chrono::Local;
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
 use std::path::PathBuf;
@@ -182,7 +182,6 @@ fn read_file(filename: PathBuf) -> Result<Vec<String>, Box<dyn Error>> {
 
     return Ok(ingredients);
 }
-
 
 /// Main function
 ///
