@@ -13,6 +13,8 @@ const DOCUMENT_BEGIN: &str = r#"
 \usepackage{fontspec}
 \usepackage{multicol}
 
+\pagestyle{empty}
+
 \setmainfont{Andika}
 
 \begin{document}
@@ -27,30 +29,48 @@ const HEADING_START_MATT: &str = r#"
 
 const HEADING_START_MAX: &str = r#"
 \begin{center}
-\huge{Grocery List - Max}
+{\huge Grocery List - Max}
+\medskip
+
 "#;
 
 const HEADING_START_MILES: &str = r#"
 \begin{center}
-\huge{Grocery List - Miles}
+{\huge Grocery List - Miles}
+\medskip
+
 "#;
 
 const HEADING_ENDS: &str = r#"
 \end{center}
 "#;
 
-const BEGIN_LIST: &str = r#"
+const BEGIN_BALANCED_LIST: &str = r#"
 \bigskip
 \begin{multicols}{2}
 \begin{itemize}
 {\Large
 "#;
 
-const END_LIST: &str = r#"
+const END_BALANCED_LIST: &str = r#"
 }
 \end{itemize}
 \end{multicols}
 "#;
+
+const BEGIN_UNBALANCED_LIST: &str = r#"
+\bigskip
+\begin{multicols*}{2}
+\begin{itemize}
+{\Large
+"#;
+
+const END_UNBALANCED_LIST: &str = r#"
+}
+\end{itemize}
+\end{multicols*}
+"#;
+
 
 const NEWPAGE: &str = r#"
 \newpage
@@ -95,7 +115,7 @@ impl Ingredients {
 /// * On Failure, an Err() containing (potentially) useful information is returned.
 ///
 fn sort_ingredients(ingredients: Vec<String>) -> Result<Ingredients, Box<dyn Error>> {
-    let mut max: bool = true;
+    let mut max: bool = false;
     let mut parsed_ingredients = Ingredients::new();
 
     for ingredient in ingredients {
@@ -130,33 +150,35 @@ fn write_ingredients(ingredients: Vec<String>, file: PathBuf) -> Result<(), Box<
     file.write(HEADING_START_MATT.as_bytes())?;
     file.write(format!("{}\n", date).as_bytes())?;
     file.write(HEADING_ENDS.as_bytes())?;
-    file.write(BEGIN_LIST.as_bytes())?;
+    file.write(BEGIN_BALANCED_LIST.as_bytes())?;
 
     for ingredient in sorted_ingredients.all {
         file.write(format!("\\item[] {}\n", ingredient).as_bytes())?;
     }
 
-    file.write(END_LIST.as_bytes())?;
+    file.write(END_BALANCED_LIST.as_bytes())?;
     file.write(NEWPAGE.as_bytes())?;
     file.write(HEADING_START_MAX.as_bytes())?;
+    file.write(format!("{}\n", date).as_bytes())?;
     file.write(HEADING_ENDS.as_bytes())?;
-    file.write(BEGIN_LIST.as_bytes())?;
+    file.write(BEGIN_UNBALANCED_LIST.as_bytes())?;
 
     for ingredient in sorted_ingredients.max {
         file.write(format!("\\item[] {}\n", ingredient).as_bytes())?;
     }
 
-    file.write(END_LIST.as_bytes())?;
+    file.write(END_UNBALANCED_LIST.as_bytes())?;
     file.write(NEWPAGE.as_bytes())?;
     file.write(HEADING_START_MILES.as_bytes())?;
+    file.write(format!("{}\n", date).as_bytes())?;
     file.write(HEADING_ENDS.as_bytes())?;
-    file.write(BEGIN_LIST.as_bytes())?;
+    file.write(BEGIN_UNBALANCED_LIST.as_bytes())?;
 
     for ingredient in sorted_ingredients.miles {
         file.write(format!("\\item[] {}\n", ingredient).as_bytes())?;
     }
 
-    file.write(END_LIST.as_bytes())?;
+    file.write(END_UNBALANCED_LIST.as_bytes())?;
     file.write(DOCUMENT_END.as_bytes())?;
 
     Ok(())
