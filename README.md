@@ -7,9 +7,9 @@ An application to generate 3 formatted grocery lists from a single input file. T
 
 ## Introduction
 
-This is a custom application which performs a very specific task, for a very picky customer set - my sons Max and Miles. We go grocery shopping and we split up the list between the to of them, and they read their list and collect their goods. The master list (mine) serves as a check on this.
+This is a custom application which performs a very specific task, for a very picky customer set - my sons Max and Miles. We go grocery shopping and we split up the list between the two of them, and they read their list and collect their goods. The master list (mine) serves as a check on this.
 
-The output from this application's companion application, [emeals_getter](https://github.com/mattcaron/emeals_getter) can be used as input for this.
+The output from this application's companion application, [emeals_getter](https://github.com/mattcaron/emeals_getter), can be used as input for this.
 
 ## Usage
 
