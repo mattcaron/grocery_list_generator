@@ -115,7 +115,7 @@ impl Ingredients {
 /// * On Failure, an Err() containing (potentially) useful information is returned.
 ///
 fn sort_ingredients(ingredients: Vec<String>) -> Result<Ingredients, Box<dyn Error>> {
-    let mut max: bool = false;
+    let mut max: bool = rand::random();
     let mut parsed_ingredients = Ingredients::new();
 
     for ingredient in ingredients {
