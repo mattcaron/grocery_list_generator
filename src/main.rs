@@ -27,12 +27,14 @@ const HEADING_START_MATT: &str = r#"
 
 "#;
 
+/*
 const HEADING_START_MAX: &str = r#"
 \begin{center}
 {\huge Grocery List - Max}
 \medskip
 
 "#;
+*/
 
 const HEADING_START_MILES: &str = r#"
 \begin{center}
@@ -71,7 +73,6 @@ const END_UNBALANCED_LIST: &str = r#"
 \end{multicols*}
 "#;
 
-
 const NEWPAGE: &str = r#"
 \newpage
 "#;
@@ -91,7 +92,7 @@ struct Args {
 /// Ingredients structure
 struct Ingredients {
     all: Vec<String>,   // All ingredients
-    max: Vec<String>,   // Max's ingredients
+//    max: Vec<String>,   // Max's ingredients
     miles: Vec<String>, // Miles's ingredients
 }
 
@@ -99,7 +100,7 @@ impl Ingredients {
     pub fn new() -> Ingredients {
         Ingredients {
             all: Vec::new(),
-            max: Vec::new(),
+            // max: Vec::new(),
             miles: Vec::new(),
         }
     }
@@ -115,17 +116,22 @@ impl Ingredients {
 /// * On Failure, an Err() containing (potentially) useful information is returned.
 ///
 fn sort_ingredients(ingredients: Vec<String>) -> Result<Ingredients, Box<dyn Error>> {
-    let mut max: bool = rand::random();
+    // let mut max: bool = rand::random();
     let mut parsed_ingredients = Ingredients::new();
 
     for ingredient in ingredients {
         parsed_ingredients.all.push(ingredient.clone());
+        // Max doesn't want to come anymore - 20201221
+        /*
         if max {
             parsed_ingredients.max.push(ingredient);
         } else {
+        */
             parsed_ingredients.miles.push(ingredient);
+            /*
         }
         max = !max;
+        */
     }
 
     Ok(parsed_ingredients)
@@ -157,6 +163,9 @@ fn write_ingredients(ingredients: Vec<String>, file: PathBuf) -> Result<(), Box<
     }
 
     file.write(END_BALANCED_LIST.as_bytes())?;
+
+    // Max doesn't want to come anymore - 20201221
+    /*
     file.write(NEWPAGE.as_bytes())?;
     file.write(HEADING_START_MAX.as_bytes())?;
     file.write(format!("{}\n", date).as_bytes())?;
@@ -168,6 +177,7 @@ fn write_ingredients(ingredients: Vec<String>, file: PathBuf) -> Result<(), Box<
     }
 
     file.write(END_UNBALANCED_LIST.as_bytes())?;
+    */
     file.write(NEWPAGE.as_bytes())?;
     file.write(HEADING_START_MILES.as_bytes())?;
     file.write(format!("{}\n", date).as_bytes())?;
