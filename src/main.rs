@@ -60,6 +60,7 @@ const END_BALANCED_LIST: &str = r#"
 \end{multicols}
 "#;
 
+/*
 const BEGIN_UNBALANCED_LIST: &str = r#"
 \bigskip
 \begin{multicols*}{2}
@@ -72,6 +73,7 @@ const END_UNBALANCED_LIST: &str = r#"
 \end{itemize}
 \end{multicols*}
 "#;
+*/
 
 const NEWPAGE: &str = r#"
 \newpage
@@ -182,13 +184,13 @@ fn write_ingredients(ingredients: Vec<String>, file: PathBuf) -> Result<(), Box<
     file.write(HEADING_START_MILES.as_bytes())?;
     file.write(format!("{}\n", date).as_bytes())?;
     file.write(HEADING_ENDS.as_bytes())?;
-    file.write(BEGIN_UNBALANCED_LIST.as_bytes())?;
+    file.write(BEGIN_BALANCED_LIST.as_bytes())?;
 
     for ingredient in sorted_ingredients.miles {
         file.write(format!("\\item[] {}\n", ingredient).as_bytes())?;
     }
 
-    file.write(END_UNBALANCED_LIST.as_bytes())?;
+    file.write(END_BALANCED_LIST.as_bytes())?;
     file.write(DOCUMENT_END.as_bytes())?;
 
     Ok(())
