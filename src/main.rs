@@ -20,25 +20,9 @@ const DOCUMENT_BEGIN: &str = r#"
 \begin{document}
 "#;
 
-const HEADING_START_MATT: &str = r#"
+const HEADING_START: &str = r#"
 \begin{center}
-{\huge Grocery List - Matt}
-\medskip
-
-"#;
-
-/*
-const HEADING_START_MAX: &str = r#"
-\begin{center}
-{\huge Grocery List - Max}
-\medskip
-
-"#;
-*/
-
-const HEADING_START_MILES: &str = r#"
-\begin{center}
-{\huge Grocery List - Miles}
+{\huge Grocery List}
 \medskip
 
 "#;
@@ -60,25 +44,6 @@ const END_BALANCED_LIST: &str = r#"
 \end{multicols}
 "#;
 
-/*
-const BEGIN_UNBALANCED_LIST: &str = r#"
-\bigskip
-\begin{multicols*}{2}
-\begin{itemize}
-{\Large
-"#;
-
-const END_UNBALANCED_LIST: &str = r#"
-}
-\end{itemize}
-\end{multicols*}
-"#;
-*/
-
-const NEWPAGE: &str = r#"
-\newpage
-"#;
-
 const DOCUMENT_END: &str = r#"
 \end{document}
 "#;
@@ -93,18 +58,12 @@ struct Args {
 
 /// Ingredients structure
 struct Ingredients {
-    all: Vec<String>,   // All ingredients
-//    max: Vec<String>,   // Max's ingredients
-    miles: Vec<String>, // Miles's ingredients
+    all: Vec<String>, // All ingredients
 }
 
 impl Ingredients {
     pub fn new() -> Ingredients {
-        Ingredients {
-            all: Vec::new(),
-            // max: Vec::new(),
-            miles: Vec::new(),
-        }
+        Ingredients { all: Vec::new() }
     }
 }
 
@@ -123,17 +82,6 @@ fn sort_ingredients(ingredients: Vec<String>) -> Result<Ingredients, Box<dyn Err
 
     for ingredient in ingredients {
         parsed_ingredients.all.push(ingredient.clone());
-        // Max doesn't want to come anymore - 20201221
-        /*
-        if max {
-            parsed_ingredients.max.push(ingredient);
-        } else {
-        */
-            parsed_ingredients.miles.push(ingredient);
-            /*
-        }
-        max = !max;
-        */
     }
 
     Ok(parsed_ingredients)
@@ -155,7 +103,7 @@ fn write_ingredients(ingredients: Vec<String>, file: PathBuf) -> Result<(), Box<
     let mut file = File::create(file)?;
 
     file.write(DOCUMENT_BEGIN.as_bytes())?;
-    file.write(HEADING_START_MATT.as_bytes())?;
+    file.write(HEADING_START.as_bytes())?;
     file.write(format!("{}\n", date).as_bytes())?;
     file.write(HEADING_ENDS.as_bytes())?;
     file.write(BEGIN_BALANCED_LIST.as_bytes())?;
@@ -166,31 +114,6 @@ fn write_ingredients(ingredients: Vec<String>, file: PathBuf) -> Result<(), Box<
 
     file.write(END_BALANCED_LIST.as_bytes())?;
 
-    // Max doesn't want to come anymore - 20201221
-    /*
-    file.write(NEWPAGE.as_bytes())?;
-    file.write(HEADING_START_MAX.as_bytes())?;
-    file.write(format!("{}\n", date).as_bytes())?;
-    file.write(HEADING_ENDS.as_bytes())?;
-    file.write(BEGIN_UNBALANCED_LIST.as_bytes())?;
-
-    for ingredient in sorted_ingredients.max {
-        file.write(format!("\\item[] {}\n", ingredient).as_bytes())?;
-    }
-
-    file.write(END_UNBALANCED_LIST.as_bytes())?;
-    */
-    file.write(NEWPAGE.as_bytes())?;
-    file.write(HEADING_START_MILES.as_bytes())?;
-    file.write(format!("{}\n", date).as_bytes())?;
-    file.write(HEADING_ENDS.as_bytes())?;
-    file.write(BEGIN_BALANCED_LIST.as_bytes())?;
-
-    for ingredient in sorted_ingredients.miles {
-        file.write(format!("\\item[] {}\n", ingredient).as_bytes())?;
-    }
-
-    file.write(END_BALANCED_LIST.as_bytes())?;
     file.write(DOCUMENT_END.as_bytes())?;
 
     Ok(())
