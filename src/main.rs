@@ -35,7 +35,7 @@ const BEGIN_BALANCED_LIST: &str = r#"
 \bigskip
 \begin{multicols}{2}
 \begin{itemize}
-{\Large
+{\large
 "#;
 
 const END_BALANCED_LIST: &str = r#"
