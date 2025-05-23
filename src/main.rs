@@ -137,7 +137,7 @@ fn read_file(filename: PathBuf) -> Result<Vec<String>, Box<dyn Error>> {
         .map(|line| line.expect("Error reading line"))
         .collect();
 
-    return Ok(ingredients);
+    Ok(ingredients)
 }
 
 /// Main function
