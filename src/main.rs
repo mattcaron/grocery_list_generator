@@ -2,7 +2,7 @@
 use chrono::Local;
 use std::error::Error;
 use std::fs::File;
-use std::io::{prelude::*, BufReader};
+use std::io::{prelude::*, read_to_string};
 use std::path::PathBuf;
 use structopt::StructOpt;
 
@@ -129,13 +129,17 @@ fn write_ingredients(ingredients: Vec<String>, file: PathBuf) -> Result<(), Box<
 /// * On Failure, an Err() containing (potentially) useful information is returned.
 ///
 fn read_file(filename: PathBuf) -> Result<Vec<String>, Box<dyn Error>> {
-    let file = File::open(filename).expect("Could not read input file.");
-    let reader = BufReader::new(file);
+    let file = match File::open(filename) {
+        Ok(file) => file,
+        Err(error) => return Err(format!("Could not open input file: {error}").into()),
+    };
 
-    let ingredients: Vec<String> = reader
-        .lines()
-        .map(|line| line.expect("Error reading line"))
-        .collect();
+    let contents = match read_to_string(file) {
+        Ok(contents) => contents,
+        Err(error) => return Err(format!("Could not read input file: {error}").into()),
+    };
+
+    let ingredients: Vec<String> = contents.lines().map(|line| line.to_string()).collect();
 
     Ok(ingredients)
 }
