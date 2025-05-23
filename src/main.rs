@@ -1,5 +1,5 @@
+//! Program to generate a grocery list from a simple text file.
 use chrono::Local;
-/// Module to handle generating latex files for ingredients
 use std::error::Error;
 use std::fs::File;
 use std::io::{prelude::*, BufReader};
@@ -102,19 +102,19 @@ fn write_ingredients(ingredients: Vec<String>, file: PathBuf) -> Result<(), Box<
 
     let mut file = File::create(file)?;
 
-    file.write(DOCUMENT_BEGIN.as_bytes())?;
-    file.write(HEADING_START.as_bytes())?;
-    file.write(format!("{}\n", date).as_bytes())?;
-    file.write(HEADING_ENDS.as_bytes())?;
-    file.write(BEGIN_BALANCED_LIST.as_bytes())?;
+    file.write_all(DOCUMENT_BEGIN.as_bytes())?;
+    file.write_all(HEADING_START.as_bytes())?;
+    file.write_all(format!("{}\n", date).as_bytes())?;
+    file.write_all(HEADING_ENDS.as_bytes())?;
+    file.write_all(BEGIN_BALANCED_LIST.as_bytes())?;
 
     for ingredient in sorted_ingredients.all {
-        file.write(format!("\\item[] {}\n", ingredient).as_bytes())?;
+        file.write_all(format!("\\item[] {}\n", ingredient).as_bytes())?;
     }
 
-    file.write(END_BALANCED_LIST.as_bytes())?;
+    file.write_all(END_BALANCED_LIST.as_bytes())?;
 
-    file.write(DOCUMENT_END.as_bytes())?;
+    file.write_all(DOCUMENT_END.as_bytes())?;
 
     Ok(())
 }
